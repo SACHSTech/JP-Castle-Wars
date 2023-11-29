@@ -40,7 +40,7 @@ public class CastleRush extends PApplet {
 
         background(255);
         image(castleImage, width - castleImage.width, height / 2 - castleImage.height / 2);
-        drawHealthGold(width - 150, 20, castleHealth, 100);
+        drawInfo(width - 150, 20, castleHealth, 100);
         spawnEnemy();
         updateEnemies();
         drawEnemies();
@@ -53,7 +53,7 @@ public class CastleRush extends PApplet {
 
     }
 
-    public void drawHealthGold(float x, float y, float health, float maxHealth) {
+    public void drawInfo(float x, float y, float health, float maxHealth) {
         
         float barWidth = 100;
         float barHeight = 10;
@@ -65,6 +65,7 @@ public class CastleRush extends PApplet {
         fill(0);
         text("Castle Health", width - 150, 15);
         text("Gold: " + (int)(gold), width - 150, 55);
+        text("Wave: " + wave, width - 450, 15);
         fill(255, 0, 0);
         rect(x, y, barWidth * healthPercentage, barHeight);
     }
@@ -86,7 +87,7 @@ public class CastleRush extends PApplet {
                 wave ++;
 
             }
-            
+
         }
 
     }
@@ -148,6 +149,7 @@ public class CastleRush extends PApplet {
         int y;
         int health;
         int maxHealth;
+        float initialSpeed;
 
         public Enemy(int x, int y) {
 
@@ -155,13 +157,14 @@ public class CastleRush extends PApplet {
             this.y = y;
             this.health = wave;
             this.maxHealth = wave;
+            this.initialSpeed = wave;
 
         }
 
         public void moveTowards(int targetX, int targetY) {
 
             float distance = dist(x, y, targetX, targetY);
-            float speed = wave;
+            float speed = initialSpeed;
 
             if (distance < 400) {
 
