@@ -80,8 +80,6 @@ public class CastleRush extends PApplet {
         fill(0);
         text("Gold: " + (int) (gold), width - 150, 55);
 
-        text("Wave: " + wave, width - 450, 15);
-
         // Draws healthbar
         float healthPercentage = health / maxHealth;
         float barWidth = 100;
@@ -99,6 +97,8 @@ public class CastleRush extends PApplet {
         float triangleX = x - 285;
         float triangleY = y + barHeight;
 
+        fill(0);
+        text("Wave: " + wave, width - 450, 15);
         fill(150);
         stroke(0);
         strokeWeight(2);
@@ -106,10 +106,11 @@ public class CastleRush extends PApplet {
 
         if (mouseX >= triangleX && mouseX <= triangleX + triangleSize && mouseY >= triangleY && mouseY <= triangleY + triangleSize && mousePressed && startGame == false) {
             startGame = true;
+        } else {
+            
         }
-
     }
-    
+
     /**
      * Spawns enemies at regular intervals based on the frame count.
      */
