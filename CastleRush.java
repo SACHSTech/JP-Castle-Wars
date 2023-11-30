@@ -19,6 +19,14 @@ public class CastleRush extends PApplet {
     int gold = 100;
     int selectedUnit = 0;
 
+    float x = (width + 550);
+    float y = 20;
+    float barWidth = 100;
+    float barHeight = 10;
+    float buttonSize = 20;
+    float buttonX = x - 285;
+    float buttonY = y + barHeight;
+
     boolean startGame = false;
 
     ArrayList<Enemy> enemies = new ArrayList<>();
@@ -54,8 +62,14 @@ public class CastleRush extends PApplet {
     public void draw() {
         background(52, 140, 49);
         image(castleImage, width - castleImage.width, height / 2 - castleImage.height / 2);
-        drawInfo(width - 150, 20, castleHealth, 100);
+        drawInfo(castleHealth, 100);
         drawSummonUI();
+
+        if (mouseX >= buttonX && mouseX <= buttonX + buttonSize && mouseY >= buttonY && mouseY <= buttonY + buttonSize && mousePressed && startGame == false) {
+            startGame = true;
+        } else {
+            startGame = false;
+        }
 
         if (startGame) {
             spawnEnemy();
@@ -71,12 +85,10 @@ public class CastleRush extends PApplet {
     /**
      * Draws the castle health bar, gold, and wave information on the screen.
      *
-     * @param x         The x-coordinate of the information display.
-     * @param y         The y-coordinate of the information display.
      * @param health    The current health of the castle.
      * @param maxHealth The maximum health of the castle.
      */
-    public void drawInfo(float x, float y, float health, float maxHealth) {
+    public void drawInfo(float health, float maxHealth) {
 
         // Draws the gold counter
         fill(0);
@@ -84,8 +96,6 @@ public class CastleRush extends PApplet {
 
         // Draws healthbar
         float healthPercentage = health / maxHealth;
-        float barWidth = 100;
-        float barHeight = 10;
 
         fill(0);
         text("Castle Health", width - 150, 15);
@@ -96,21 +106,20 @@ public class CastleRush extends PApplet {
         rect(x, y, barWidth * healthPercentage, barHeight);
 
         // Draw start wave button
-        float triangleSize = 20;
-        float triangleX = x - 285;
-        float triangleY = y + barHeight;
-
         fill(0);
         text("Wave: " + wave, width - 450, 15);
-        fill(150);
-        stroke(0);
-        strokeWeight(2);
-        triangle(triangleX, triangleY, triangleX, triangleY + triangleSize, triangleX + triangleSize, triangleY + triangleSize/2);
 
-        if (mouseX >= triangleX && mouseX <= triangleX + triangleSize && mouseY >= triangleY && mouseY <= triangleY + triangleSize && mousePressed && startGame == false) {
-            startGame = true;
+        if (!startGame) {
+            // Draws play button
+            fill(150);
+            stroke(0);
+            triangle(buttonX, buttonY, buttonX, buttonY + buttonSize, buttonX + buttonSize, buttonY + buttonSize/2);
         } else {
-            
+            // Else draws pause button
+            fill(150);
+            stroke(0);
+            rect(buttonX, buttonY, 10, 30);
+            rect(buttonX + buttonSize - 10, buttonY, 30, 30);
         }
     }
     
