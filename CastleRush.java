@@ -27,7 +27,7 @@ public class CastleRush extends PApplet {
     float buttonX = x - 285;
     float buttonY = y + barHeight;
 
-    boolean startGame = false;
+    boolean nextWave = false;
 
     ArrayList<Enemy> enemies = new ArrayList<>();
 
@@ -65,17 +65,16 @@ public class CastleRush extends PApplet {
         drawInfo(castleHealth, 100);
         drawSummonUI();
 
-        if (mouseX >= buttonX && mouseX <= buttonX + buttonSize && mouseY >= buttonY && mouseY <= buttonY + buttonSize && mousePressed && startGame == false) {
-            startGame = true;
-        } else {
-            startGame = false;
+        if (mouseX >= buttonX && mouseX <= buttonX + buttonSize && mouseY >= buttonY && mouseY <= buttonY + buttonSize && mousePressed) {
+            nextWave = true;
         }
 
-        if (startGame) {
+        if (nextWave) {
             spawnEnemy();
-            updateEnemies();
-            drawEnemies();
         }
+
+        updateEnemies();
+        drawEnemies();
 
         if (lostGame()) {
             exit();
@@ -109,7 +108,7 @@ public class CastleRush extends PApplet {
         fill(0);
         text("Wave: " + wave, width - 450, 15);
 
-        if (!startGame) {
+        if (!nextWave) {
             // Draws play button
             fill(150);
             stroke(0);
@@ -118,8 +117,8 @@ public class CastleRush extends PApplet {
             // Else draws pause button
             fill(150);
             stroke(0);
-            rect(buttonX, buttonY, 10, 30);
-            rect(buttonX + buttonSize - 10, buttonY, 30, 30);
+            rect(buttonX, buttonY, 6, 20);
+            rect(buttonX + buttonSize - 10, buttonY, 6, 20);
         }
     }
     
@@ -167,14 +166,20 @@ public class CastleRush extends PApplet {
             int x = 0;
             Enemy enemy = new Enemy(x, randomY);
             enemy.moveTowards(670, 300);
-            enemies.add(enemy);
+
+            if (nextWave) {
+                enemies.add(enemy);
+            }
+
             spawnedEnemies++;
 
             if (spawnedEnemies % 8 == 0) {
                 wave++;
+                nextWave = false;
             }
         }
     }
+    
 
     /**
      * Updates the positions and states of all enemies.
