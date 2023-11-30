@@ -17,6 +17,7 @@ public class CastleRush extends PApplet {
     int wave = 1;
     int spawnedEnemies = 0;
     int gold = 100;
+    int selectedUnit = 0;
 
     boolean startGame = false;
 
@@ -42,7 +43,7 @@ public class CastleRush extends PApplet {
      * Initializes the game state and loads necessary resources.
      */
     public void setup() {
-        castleImage = loadImage("Maps/Castle.png");
+        castleImage = loadImage("Buildings/Castle.png");
         castleHealth = 100;
         enemies = new ArrayList<>();
     }
@@ -51,9 +52,10 @@ public class CastleRush extends PApplet {
      * The main game loop that handles drawing and updating game elements.
      */
     public void draw() {
-        background(255);
+        background(52, 140, 49);
         image(castleImage, width - castleImage.width, height / 2 - castleImage.height / 2);
         drawInfo(width - 150, 20, castleHealth, 100);
+        drawSummonUI();
 
         if (startGame) {
             spawnEnemy();
@@ -88,6 +90,7 @@ public class CastleRush extends PApplet {
         fill(0);
         text("Castle Health", width - 150, 15);
         fill(150);
+        stroke(0);
         rect(x, y, barWidth, barHeight);
         fill(255, 0, 0);
         rect(x, y, barWidth * healthPercentage, barHeight);
@@ -109,6 +112,40 @@ public class CastleRush extends PApplet {
         } else {
             
         }
+    }
+    
+    /**
+     * Draws squares for summoning units
+     */
+    public void drawSummonUI() {
+        float bottomSectionY = height - 65;
+        float numSqaures = 4;
+        float currentX = (width / 2) - (numSqaures / 2 * 60);
+    
+        for (int i = 1; i <= numSqaures; i++) {
+            if (mouseX >= currentX && mouseX <= currentX + 50 && mouseY >= bottomSectionY && mouseY <= bottomSectionY + 50) {
+                stroke(255, 255, 0);
+                if (mousePressed) {
+                    selectedUnit = i;
+                }
+            } else if (selectedUnit == i) {
+                stroke (255);
+            } else {
+                stroke (0);
+            }
+
+            fill(150);
+            rect(currentX, bottomSectionY, 50, 50);
+    
+            // Draw number on the top right corner
+            fill(255);
+            textSize(12);
+            text(i, currentX + 40, bottomSectionY + 15);
+            fill (0);
+    
+            currentX += 60;
+        }
+    
     }
 
     /**
