@@ -10,12 +10,15 @@ import java.util.Random;
 public class CastleRush extends PApplet {
 
     PImage castleImage;
+    PImage[] enemySprite;
+    
 
     Random random = new Random();
 
     int castleHealth;
     int wave = 1;
     int spawnedEnemies = 0;
+    int totalEnemyCostume = 1;
     int gold = 100;
     int selectedUnit = 0;
 
@@ -51,6 +54,11 @@ public class CastleRush extends PApplet {
      * Initializes the game state and loads necessary resources.
      */
     public void setup() {
+        enemySprite = new PImage[totalEnemyCostume];
+        for (int i = 0; i < totalEnemyCostume; i++) {
+            enemySprite[i] = loadImage("Sprites/Enemy" + i + ".png");
+            enemySprite[i].resize(30, 30);
+        }
         castleImage = loadImage("Buildings/Castle.png");
         castleHealth = 100;
         enemies = new ArrayList<>();
@@ -194,7 +202,7 @@ public class CastleRush extends PApplet {
                 enemies.remove(i);
             }
 
-            if (mouseX >= enemy.x - 10 && mouseX <= enemy.x + 10 && mouseY >= enemy.y - 10 && mouseY <= enemy.y + 10 && mousePressed) {
+            if (mouseX >= enemy.x - 20 && mouseX <= enemy.x + 20 && mouseY >= enemy.y - 20 && mouseY <= enemy.y + 20 && mousePressed) {
                 if (enemy.getHealth() <= 0) {
                     enemies.remove(i);
                 } else {
@@ -220,7 +228,7 @@ public class CastleRush extends PApplet {
     public void drawEnemies() {
         for (Enemy enemy : enemies) {
             fill(0, 255, 0);
-            ellipse(enemy.x, enemy.y, 20, 20);
+            image(enemySprite[0], enemy.x, enemy.y);
         }
     }
 
